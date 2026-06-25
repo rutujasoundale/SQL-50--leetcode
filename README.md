@@ -1,1 +1,1 @@
-# SQL-50--leetcode
+#SQL 50+ dbms Interview questions
