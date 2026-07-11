@@ -500,4 +500,21 @@ Only rows satisfying **both** conditions are returned.
 * With appropriate indexes on `low_fats` and `recyclable`, the database may reduce the amount of data scanned.
 
 ---
+## Interview Follow-up for This Problem
+
+1. **Why use `AND` instead of `OR`?**
+
+   * `AND` requires both conditions to be true.
+   * `OR` would return products that are either low-fat or recyclable, which doesn't match the requirement.
+
+2. **Can the `WHERE` conditions be written in any order?**
+
+   * Yes. `low_fats = 'Y' AND recyclable = 'Y'` is logically equivalent to `recyclable = 'Y' AND low_fats = 'Y'`.
+
+3. **What if the columns contain `NULL` values?**
+
+   * Rows with `NULL` in either column won't satisfy `= 'Y'`, so they won't be returned unless you explicitly handle `NULL` with `IS NULL` or `COALESCE()`.
+
+Mastering these `SELECT` concepts—especially `WHERE`, `AND/OR`, `LIKE`, `DISTINCT`, `ORDER BY`, and execution order—will prepare you for a large portion of entry-level SQL interview questions and the LeetCode SQL 50 problems.
+
 
