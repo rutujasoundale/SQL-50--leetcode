@@ -1,1 +1,281 @@
 
+For SQL interviews, **JOINs are one of the most frequently asked topics** because they test whether you understand relationships between tables.
+
+# What is a JOIN?
+
+A JOIN combines rows from **two or more tables** based on a related column.
+
+Example:
+
+### Employees Table
+
+| emp_id | name   | dept_id |
+| ------ | ------ | ------- |
+| 1      | Rutuja | 101     |
+| 2      | Amit   | 102     |
+| 3      | Neha   | 103     |
+| 4      | Rahul  | NULL    |
+
+### Departments Table
+
+| dept_id | department |
+| ------- | ---------- |
+| 101     | HR         |
+| 102     | IT         |
+| 104     | Finance    |
+
+We will use these tables for all joins.
+
+---
+
+# 1. INNER JOIN
+
+Returns only the rows that have matching values in **both tables**.
+
+```sql
+SELECT e.name, d.department
+FROM Employees e
+INNER JOIN Departments d
+ON e.dept_id = d.dept_id;
+```
+
+### Output
+
+| name   | department |
+| ------ | ---------- |
+| Rutuja | HR         |
+| Amit   | IT         |
+
+### Visualization
+
+```
+Employees ∩ Departments
+```
+
+Only the intersection is returned.
+
+### Interview Definition
+
+> INNER JOIN returns records that have matching values in both tables.
+
+---
+
+# 2. LEFT JOIN (LEFT OUTER JOIN)
+
+Returns **all rows from the left table** and matching rows from the right table.
+
+If no match exists, NULL is returned.
+
+```sql
+SELECT e.name, d.department
+FROM Employees e
+LEFT JOIN Departments d
+ON e.dept_id = d.dept_id;
+```
+
+### Output
+
+| name   | department |
+| ------ | ---------- |
+| Rutuja | HR         |
+| Amit   | IT         |
+| Neha   | NULL       |
+| Rahul  | NULL       |
+
+### Visualization
+
+```
+Entire Employees table + matches
+```
+
+### Interview Definition
+
+> LEFT JOIN returns all records from the left table and matching records from the right table. If no match exists, NULL is returned.
+
+---
+
+# 3. RIGHT JOIN (RIGHT OUTER JOIN)
+
+Returns **all rows from the right table** and matching rows from the left table.
+
+```sql
+SELECT e.name, d.department
+FROM Employees e
+RIGHT JOIN Departments d
+ON e.dept_id = d.dept_id;
+```
+
+### Output
+
+| name   | department |
+| ------ | ---------- |
+| Rutuja | HR         |
+| Amit   | IT         |
+| NULL   | Finance    |
+
+### Interview Definition
+
+> RIGHT JOIN returns all records from the right table and matching records from the left table.
+
+---
+
+# 4. FULL OUTER JOIN
+
+Returns:
+
+* All matching rows.
+* All unmatched rows from the left table.
+* All unmatched rows from the right table.
+
+```sql
+SELECT e.name, d.department
+FROM Employees e
+FULL OUTER JOIN Departments d
+ON e.dept_id = d.dept_id;
+```
+
+### Output
+
+| name   | department |
+| ------ | ---------- |
+| Rutuja | HR         |
+| Amit   | IT         |
+| Neha   | NULL       |
+| Rahul  | NULL       |
+| NULL   | Finance    |
+
+### Interview Definition
+
+> FULL OUTER JOIN returns all records when there is a match in either table.
+
+---
+
+# 5. CROSS JOIN
+
+Creates every possible combination.
+
+```sql
+SELECT e.name, d.department
+FROM Employees e
+CROSS JOIN Departments d;
+```
+
+If Employees has 4 rows and Departments has 3 rows:
+
+```
+4 × 3 = 12 rows
+```
+
+### Interview Definition
+
+> CROSS JOIN returns the Cartesian product of two tables.
+
+---
+
+# 6. SELF JOIN
+
+Joining a table with itself.
+
+Example:
+
+### Employees
+
+| emp_id | name | manager_id |
+| ------ | ---- | ---------- |
+| 1      | A    | NULL       |
+| 2      | B    | 1          |
+| 3      | C    | 1          |
+
+```sql
+SELECT e.name AS employee,
+       m.name AS manager
+FROM Employees e
+LEFT JOIN Employees m
+ON e.manager_id = m.emp_id;
+```
+
+### Output
+
+| employee | manager |
+| -------- | ------- |
+| A        | NULL    |
+| B        | A       |
+| C        | A       |
+
+---
+
+# Difference Between INNER and LEFT JOIN
+
+| INNER JOIN                                   | LEFT JOIN                     |
+| -------------------------------------------- | ----------------------------- |
+| Only matching rows                           | All rows from left table      |
+| Removes unmatched rows                       | Keeps unmatched rows          |
+| NULL values not included for missing matches | NULL used for missing matches |
+
+---
+
+# Interview Questions
+
+### Find employees without a department
+
+```sql
+SELECT *
+FROM Employees e
+LEFT JOIN Departments d
+ON e.dept_id = d.dept_id
+WHERE d.dept_id IS NULL;
+```
+
+---
+
+### Find departments with no employees
+
+```sql
+SELECT *
+FROM Departments d
+LEFT JOIN Employees e
+ON d.dept_id = e.dept_id
+WHERE e.emp_id IS NULL;
+```
+
+---
+
+### Difference between WHERE and ON in JOIN?
+
+`ON` specifies **how tables are joined**.
+
+`WHERE` filters the result **after the join happens**.
+
+Example:
+
+```sql
+SELECT *
+FROM Employees e
+LEFT JOIN Departments d
+ON e.dept_id = d.dept_id
+WHERE d.department = 'IT';
+```
+
+The `WHERE` clause filters after joining.
+
+---
+
+# Easy Way to Remember
+
+* **INNER JOIN → Common rows only**
+* **LEFT JOIN → Keep left table**
+* **RIGHT JOIN → Keep right table**
+* **FULL JOIN → Keep everything**
+* **CROSS JOIN → Every combination**
+* **SELF JOIN → Same table with itself**
+
+For placements, focus the most on:
+
+1. INNER JOIN
+2. LEFT JOIN
+3. RIGHT JOIN
+4. SELF JOIN
+5. LEFT JOIN with `IS NULL`
+6. Difference between `ON` and `WHERE`
+
+These cover the majority of SQL interview questions asked in service-based companies and coding rounds.
