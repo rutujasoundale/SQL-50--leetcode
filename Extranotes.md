@@ -714,3 +714,4 @@ When you see a SQL query, ask yourself these questions:
 ### Interview Tip
 
 In interviews, it's generally acceptable to answer with **expected complexity assuming common database implementations** (like B-tree indexes and hash joins), while mentioning that the **actual execution depends on the database's query optimizer, indexes, table statistics, and execution plan**. This shows a practical understanding of how SQL performance works.
+
